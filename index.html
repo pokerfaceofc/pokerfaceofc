@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Url Shortner</title>
+    <link rel="icon" type="image/jpg" href="../telegra.ph/file/628bb3bbad35aa106b109.jpg">
+    <meta name="description" content="Simple Url Shortner, Free, Unlimited, 100% Working. Simplify your URL sharing experience with our easy-to-use URL shortening service.">
+    <link href="../external.html?link=https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="../cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        header h4 {
+            font-size: 2rem;
+            margin: 20px 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+        }
+
+        .input-container {
+            background-color: #1e1e1e;
+            padding: 0 10px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            height: calc(45px + 2px);
+            display: flex;
+            align-items: center;
+        }
+
+        .input-field {
+            width: 100%;
+            margin: 0;
+        }
+
+        .input-field input {
+            background-color: transparent;
+            border-radius: 12px;
+            padding: 15px;
+            color: #e0e0e0;
+            border: none;
+            width: calc(100% - 20px);
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        .input-field input::placeholder {
+            color: #888;
+        }
+
+        .btn {
+            background-color: #1a73e8;
+            width: 100%;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .description-box {
+            background-color: #1e1e1e;
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 12px;
+            width: 100%;
+            text-align: left;
+        }
+
+        .footer-box {
+            width: 100%;
+            max-width: 500px;
+            padding: 10px 0;
+            background-color: #1b1b1b;
+            color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        @media (min-width: 768px) {
+            body {
+                font-size: 18px;
+            }
+            .container {
+                max-width: 800px;
+            }
+            .input-field input {
+                padding: 20px;
+                height: 45px;
+            }
+            .input-container {
+                height: calc(45px + 2px);
+            }
+            .description-box {
+                margin-top: 40px;
+                padding: 30px;
+            }
+            .btn {
+                margin-top: 30px;
+            }
+            .footer-box {
+                max-width: 800px;
+                padding: 15px 0;
+            }
+        }
+
+        .modal {
+            background-color: #1e1e1e;
+            color: white;
+        }
+
+        .modal-footer .btn {
+            background-color: #1a73e8;
+        }
+
+        .result-url {
+            background-color: #121212;
+            padding: 5px 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            overflow-x: auto;
+            white-space: nowrap;
+            margin-bottom: 10px;
+        }
+
+        .result-url p {
+            margin: 0;
+            color: #e0e0e0;
+            font-size: 1rem;
+        }
+
+        .copy-btn {
+            background-color: #1a73e8;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 8px;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background-color: #166ab6;
+        }
+
+        .input-field input:focus {
+            outline: none;
+        }
+
+        .input-field input {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h4>Simple Url Shortner</h4>
+    </header>
+
+    <div class="container">
+        <div class="input-container">
+            <div class="input-field">
+                <input id="url" type="text" placeholder="Masukkan URL di sini">
+            </div>
+        </div>
+        <button class="btn" onclick="generateShortlink()">Generate Shortlink</button>
+
+        <div class="description-box">
+            <h5>Cara Menggunakan:</h5>
+            <p>Masukkan URL yang ingin dipendekkan ke dalam kotak input di atas dan tekan tombol "Generate Shortlink". Sistem akan menghasilkan URL singkat yang dapat Anda salin dan gunakan. Pastikan URL yang dimasukkan benar, termasuk "http://" atau "https://", agar proses pemendekan dapat berjalan tanpa masalah. Layanan ini gratis, tidak terbatas, dan dapat diakses di semua perangkat.</p>
+        </div>
+    </div>
+
+    <div class="footer-box">
+        <p>Made By IsnzOfc Modz</p>
+    </div>
+
+    <div id="resultModal" class="modal">
+        <div class="modal-content">
+            <h4>Shortlink Result</h4>
+            <div id="resultOriginal" class="result-url" style="display: none;">
+                <p id="originalUrl"></p>
+                <button class="copy-btn" onclick="copyToClipboard('originalUrl')">Salin</button>
+            </div>
+            <div id="resultShort" class="result-url" style="display: none;">
+                <p id="shortUrl"></p>
+                <button class="copy-btn" onclick="copyToClipboard('shortUrl')">Salin</button>
+            </div>
+            <div id="errorMessage"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn modal-close">Close</button>
+        </div>
+    </div>
+
+    <script src="../cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        function generateShortlink() {
+            const url = document.getElementById('url').value.trim();
+            const resultOriginal = document.getElementById('resultOriginal');
+            const resultShort = document.getElementById('resultShort');
+            const errorMessage = document.getElementById('errorMessage');
+
+            resultOriginal.style.display = 'none';
+            resultShort.style.display = 'none';
+            errorMessage.textContent = '';
+
+            if (!url) {
+                errorMessage.textContent = 'URL tidak boleh kosong!';
+                M.Modal.init(document.getElementById('resultModal')).open();
+                return;
+            }
+
+            const apiUrl = `https://bltoxstore.xyz/shortlink.php?url=${encodeURIComponent(url)}`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 200) {
+                        document.getElementById('originalUrl').textContent = `Original URL: ${data.originalurl}`;
+                        document.getElementById('shortUrl').textContent = `Short URL: ${data.urlshort}`;
+                        resultOriginal.style.display = 'flex';
+                        resultShort.style.display = 'flex';
+                    } else {
+                        errorMessage.textContent = 'Error: Gagal menghasilkan shortlink.';
+                    }
+                    M.Modal.init(document.getElementById('resultModal')).open();
+                })
+                .catch(error => {
+                    errorMessage.textContent = 'Error: Terjadi kesalahan saat menghubungi server.';
+                    console.error('Error:', error);
+                    M.Modal.init(document.getElementById('resultModal')).open();
+                });
+        }
+
+        function copyToClipboard(id) {
+            const text = document.getElementById(id).textContent.split(': ')[1];
+            navigator.clipboard.writeText(text).then(() => {
+                M.toast({html: 'URL disalin ke clipboard!'});
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const elems = document.querySelectorAll('.modal');
+            M.Modal.init(elems);
+        });
+    </script>
+</body>
+</html>
